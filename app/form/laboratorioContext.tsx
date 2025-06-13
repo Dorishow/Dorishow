@@ -25,8 +25,8 @@ export const initialLaboratoriosContexto: LaboratoriosContexto = {
   date: parseDate("2025-06-13"),
   setDate: () => "",
   time: parseAbsoluteToLocal("2025-06-13T18:45:22Z"),
-  setTime: (value: ZonedDateTime | null) => '',
-  formattedTime: '',
+  setTime: () => "",
+  formattedTime: "",
 };
 
 const LaboratoriosContextoCtx = createContext(initialLaboratoriosContexto);
@@ -48,12 +48,27 @@ export const LaboratoriosContextoProvider = ({
     parseAbsoluteToLocal("2025-06-13T18:45:22Z")
   );
 
-  const formatter = useDateFormatter({ timeStyle: "short"})
+  const formatter = useDateFormatter({ timeStyle: "short" });
   const formattedTime = formatter.format(time.toDate());
+
+  const updateTime = (value: ZonedDateTime | null) => {
+    if (value !== null) {
+      setTime(value);
+    }
+  };
 
   return (
     <LaboratoriosContextoCtx.Provider
-      value={{ options, selected, setSelected, date, setDate, time, setTime, formattedTime }}
+      value={{
+        options,
+        selected,
+        setSelected,
+        date,
+        setDate,
+        time,
+        setTime: updateTime,
+        formattedTime,
+      }}
     >
       {children}
     </LaboratoriosContextoCtx.Provider>
